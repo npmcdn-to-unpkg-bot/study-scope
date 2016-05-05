@@ -20,7 +20,7 @@ app.set('view engine', 'jade');
 // Handle static content like HTML/CSS
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Init morga to log in 'dev' mode
+// Init morgan to log in 'dev' mode
 app.use(logger('dev'));
 
 app.use(bodyParser.json());

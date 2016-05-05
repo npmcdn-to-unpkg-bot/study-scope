@@ -43,6 +43,10 @@ gulp.task('restart', () => {
   express.start.bind(express)();
 });
 
+const ignoreFiles = [
+  
+];
+
 gulp.task('watch', () => {
   var watcher = gulp.watch([paths.js, paths.jade, paths.css]);
   watcher.on('change', (file) => {
@@ -69,7 +73,7 @@ gulp.task('copy-templates', () => {
 });
 
 gulp.task('copy-public', () => {
-  return gulp.src('src/public/**/*.*')
+  return gulp.src(['src/public/**/*.*', '!src/public/lib'])
     .pipe(gulp.dest(paths.destination + '/public'));
 });
 

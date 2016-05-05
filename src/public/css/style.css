@@ -1,8 +1,11 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.main-logo {
+  font-size: 43px;
 }
 
-a {
-  color: #00B7FF;
+.black {
+  color: rgba(27, 27, 27, 0.76);
+}
+
+.navbar-nav > li > a {
+  color: rgba(27, 27, 27, 0.76);
 }
