@@ -8,13 +8,17 @@ var app = require('../app');
 var debug = require('debug')('study-scope:server');
 var http = require('http');
 
+// import app from "../app";
+// import debug from 'debug';
+// import { createServer } from 'http';
+
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-
+ 
 /**
  * Create HTTP server.
  */
