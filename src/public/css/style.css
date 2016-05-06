@@ -9,3 +9,7 @@
 .navbar-nav > li > a {
   color: rgba(27, 27, 27, 0.76);
 }
+
+.clearfix-header {
+  margin-top: 120px;
+}

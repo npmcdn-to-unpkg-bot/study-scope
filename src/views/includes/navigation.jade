@@ -7,18 +7,22 @@ nav.navbar
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand(href='#')
+      a.navbar-brand(href='/')
         span.icon_book_alt.main-logo
     // Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       ul.nav.navbar-nav.navbar-right.main-nav
         li
-          a(href='#intro') Intro
+          a(href='/') Intro
         li
           a(href='#services') Services
         li
           a(href='#team') Team
-        li
-          a(href='#pricing') Pricing
-        li
-          a.btn.btn-blue(href='#', data-toggle='modal', data-target='#modal1') Sign Up
+        if !user
+          li
+            a(href='/users/login') Log In
+          li
+            a.btn.btn-blue(href='/users/side-pick') Sign Up
+        if user
+          li
+            a(href='/users/logout') Log Out
