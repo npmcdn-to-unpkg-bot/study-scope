@@ -1,2 +1,2 @@
-web: bin/www.js
+web: node node_modules/gulp/bin/gulp build && node node_modules/gulp/bin/gulp server
 worker: bin/worker

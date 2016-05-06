@@ -7,7 +7,7 @@
   },
   "main": "app.js",
   "scripts": {
-    "start": "gulp"
+    "start": "gulp && node"
   },
   "dependencies": {
     "bcrypt": "^0.8.6",
