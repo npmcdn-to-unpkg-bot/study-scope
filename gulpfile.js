@@ -50,11 +50,11 @@ gulp.task('watch', function() {
   watcher.on('change', function (file) {
     var filePath = file.path;
     var fileType = filePath.slice(filePath.lastIndexOf('.'));
-    
+
     if (fileType === '.js' && !filePath.includes('/src/public/')) {
       gulp.start('build');
     } else {
-      gulp.start('copy-client', function() => {
+      gulp.start('copy-client', function() {
         express.notify.call(express, file);
       });
     }
