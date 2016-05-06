@@ -40,7 +40,13 @@ gulp.task('server', function() {
 });
 
 gulp.task('restart', function() {
-  express.start.bind(express)();
+  if(!express) {
+    gulp.start('server', function () {
+      express.start.bind(express)();
+    });
+  } else {
+    express.start.bind(express)();
+  }
 });
 
 var ignoreFiles = [];
