@@ -85,7 +85,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/schools', schools);
 
-
+ 
 app.listen(3000, () => {
   console.log('Server listening 3000 port');
 });

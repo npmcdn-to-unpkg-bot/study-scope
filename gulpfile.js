@@ -4,6 +4,7 @@ var rimraf = require('rimraf');
 var run = require('run-sequence');
 var watch = require('gulp-watch');
 var server = require('gulp-live-server');
+var connect = require('gulp-connect');
 
 var paths = {
   js: ['./src/**/*.js'],
@@ -18,6 +19,10 @@ gulp.task('default', function (cb) {
 
 gulp.task('build', function (cb) {
   run('clean', 'babel', 'copy-client', 'restart', cb);
+});
+
+gulp.task('build-deploy', cb => {
+  run('clean', 'babel', 'copy-client', 'server', 'restart', cb);
 });
 
 gulp.task('clean', function(cb ){

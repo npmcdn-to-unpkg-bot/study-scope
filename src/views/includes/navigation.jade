@@ -16,8 +16,9 @@ nav.navbar
           a(href='/') Intro
         li
           a(href='#services') Services
-        li
-          a(href='#team') Team
+        if user && user.type == 'admin'
+          li
+            a(href='/schools/manage-permissions') Manage School Permissions
         if !user
           li
             a(href='/users/login') Log In

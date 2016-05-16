@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  .container.clearfix-header
+    h1 Register Student
+    p Please register using the form below
+    ul.errors
+      if errors
+        each error, i in errors
+          li.alert.alert-danger #{error.msg}
+    form(method='post', action='/users/register-student', endtype='multipart/form-data')
+      .form-group
+        label School Name
+        select.form-control(name='schoolName')
+          each school, i in schools
+            option(value='#{school.name}') #{school.name}
+      .form-group
+        label Name
+        input.form-control(name='name', type='text', placeholder='Enter Name')
+      .form-group
+        label Username
+        input.form-control(name='username', type='text', placeholder='Enter Username')
+      .form-group
+        label Email
+        input.form-control(name='email', type='email', placeholder='Enter Email')
+      .form-group
+        label Password
+        input.form-control(name='password', type='password', placeholder='Enter Password')
+      .form-group
+        label Again Password
+        input.form-control(name='reenteredPassword', type='password', placeholder='Enter Password Again')
+      .form-group
+        label Student Key
+        input.form-control(name='studentKey', type='text', placeholder='Enter Student Key')
+      input.btn.btn-blue(name='submit', type='submit', value='Register')

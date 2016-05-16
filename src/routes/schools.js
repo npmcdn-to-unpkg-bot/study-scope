@@ -1,6 +1,7 @@
 import express from 'express';
 import School from '../models/school';
 import User from '../models/user';
+import SchoolPermission from '../models/schoolPermission';
 
 const router = express.Router();
 
@@ -49,7 +50,8 @@ router.post('/register', (req, res) => {
             username: admUsername,
             password: admPassword,
             email: admEmail,
-            schoolId: school.id
+            schoolId: school.id,
+            type: 'admin'
           })
           .then((user) => {
 
@@ -59,7 +61,37 @@ router.post('/register', (req, res) => {
           });
       });
   }
+});
 
+router.get('/manage-permissions', (req, res) => {
+  res.render('manage-school-permissions');
+});
+
+router.post('/add-permission', (req, res) => {
+  var studentKey = req.body.studentKey;
+  var user = req.user;
+
+  req.checkBody('studentKey', 'Student key is required!').notEmpty();
+
+  var errors = req.validationErrors();
+
+  console.log('errors', errors);
+
+  if(errors) {
+    res.render('manage-school-permissions', {
+      errors: errors,
+      user: user
+    });
+  } else {
+    SchoolPermission.create({
+      schoolId: user.schoolId,
+      studentKey: studentKey
+    }).then(() => {
+      res.render('manage-school-permissions', {
+        user: user
+      });
+    });
+  }
 
 });
 

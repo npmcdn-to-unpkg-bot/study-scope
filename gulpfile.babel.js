@@ -20,6 +20,10 @@ gulp.task('build', cb => {
   run('clean', 'babel', 'copy-client', 'restart', cb);
 });
 
+gulp.task('build-deploy', cb => {
+  run('clean', 'babel', 'copy-client', 'server', 'restart', cb);
+});
+
 gulp.task('clean', cb => {
   rimraf(paths.destination, cb);
 });

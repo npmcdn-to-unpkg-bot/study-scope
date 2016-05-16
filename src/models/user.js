@@ -3,7 +3,9 @@ import Sequelize from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.load();
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const dbUrl = process.env.DATABASE_URL;
+
+const sequelize = new Sequelize(dbUrl, {
   dialect: 'postgres',
   protocol: 'postgres',
   dialectOptions: {
@@ -31,6 +33,14 @@ const User = sequelize.define('user', {
   schoolId: {
     type: Sequelize.INTEGER,
     field: 'school_id'
+  },
+  type: {
+    type: Sequelize.STRING,
+    field: 'type'
+  },
+  studentKey: {
+    type: Sequelize.STRING,
+    field: 'student_key'
   }
 }, {
   freezeTableName: true
