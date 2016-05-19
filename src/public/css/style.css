@@ -13,3 +13,27 @@
 .clearfix-header {
   margin-top: 120px;
 }
+
+
+/* Rooms Styles: */
+
+.panel-heading-icon:before {
+  float: right;
+  color: red;
+  font-size: 1.6em;
+}
+
+.panel-heading-icon:hover::before {
+  cursor: pointer;
+}
+
+.inp-room-name {
+  /*width: 80%;*/
+  /*display: block;*/
+}
+
+.btn-create-room {
+  margin-top: 28px;
+  background: #337ab7;;
+  /*display: inline-block;*/
+}

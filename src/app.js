@@ -15,6 +15,7 @@ import livereload from 'connect-livereload';
 import routes from './routes/index';
 import users from './routes/users';
 import schools from './routes/schools';
+import rooms from './routes/rooms'
 
 const app = express();
 const upload = multer();
@@ -84,6 +85,7 @@ app.use(livereload({
 app.use('/', routes);
 app.use('/users', users);
 app.use('/schools', schools);
+app.use('/rooms', rooms);
 
  
 app.listen(3000, () => {

@@ -1,19 +1,7 @@
 import Sequelize from 'sequelize';
+import sequelizeConnection from './../utils/sequelize-connection';
 
-import dotenv from 'dotenv';
-dotenv.load();
-
-const dbUrl = process.env.DATABASE_URL;
-
-const sequelize = new Sequelize(dbUrl, {
-  dialect: 'postgres',
-  protocol: 'postgres',
-  dialectOptions: {
-    ssl: true
-  }
-});
-
-const SchoolPermission = sequelize.define('schoolPermission', {
+const SchoolPermission = sequelizeConnection.define('schoolPermission', {
   schoolId: {
     type: Sequelize.INTEGER,
     field: 'school_id'

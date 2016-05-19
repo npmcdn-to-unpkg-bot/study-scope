@@ -4,9 +4,13 @@ import rimraf from 'rimraf';
 import run from 'run-sequence';
 import watch from 'gulp-watch';
 import server from 'gulp-live-server';
+import browserify from 'browserify';
+import reactify from 'reactify';
+import source from 'vinyl-source-stream';
 
 const paths = {
   js: ['./src/**/*.js'],
+  jsx: ['./src/**/*.jsx'],
   jade: ['./src/**/*.jade'],
   css: ['./src/**/*.css'],
   destination: './dist'
@@ -17,7 +21,7 @@ gulp.task('default', cb => {
 });
 
 gulp.task('build', cb => {
-  run('clean', 'babel', 'copy-client', 'restart', cb);
+  run('clean', 'babel', 'copy-client', 'compile-react', 'restart', cb);
 });
 
 gulp.task('build-deploy', cb => {
@@ -29,11 +33,24 @@ gulp.task('clean', cb => {
 });
 
 gulp.task('babel', shell.task([
-  'babel src --out-dir dist'
+  'babel src --out-dir dist --ignore "**/*.jsx, src/public/js/lib/*.js"'
 ]));
 
 gulp.task('clean', cb => {
   rimraf(paths.destination, cb);
+});
+
+gulp.task('compile-react', ['compile-react-rooms']);
+
+gulp.task('compile-react-rooms', () => {
+  return browserify({
+    entries:'./src/public/js/react/rooms.jsx',
+    debug: true
+  })
+    .transform(reactify)
+    .bundle()
+    .pipe(source('rooms.js'))
+    .pipe(gulp.dest('./dist/public/js/react/'));
 });
 
 
@@ -52,7 +69,7 @@ const ignoreFiles = [
 ];
 
 gulp.task('watch', () => {
-  var watcher = gulp.watch([paths.js, paths.jade, paths.css]);
+  var watcher = gulp.watch([paths.js, paths.jade, paths.css, paths.jsx]);
   watcher.on('change', (file) => {
     const filePath = file.path;
     const fileType = filePath.slice(filePath.lastIndexOf('.'));
@@ -62,6 +79,10 @@ gulp.task('watch', () => {
 
     if(fileType === '.js' && !filePath.includes('/src/public/')) {
       gulp.start('build');
+    } else if (fileType === '.jsx') {
+      gulp.start('compile-react', () => {
+        express.notify.call(express, file);
+      });
     } else {
       gulp.start('copy-client', () => {
         express.notify.call(express, file);
@@ -77,7 +98,7 @@ gulp.task('copy-templates', () => {
 });
 
 gulp.task('copy-public', () => {
-  return gulp.src(['src/public/**/*.*', '!src/public/lib'])
+  return gulp.src(['src/public/**/*.*', '!src/public/js/react/**/*.*'])
     .pipe(gulp.dest(paths.destination + '/public'));
 });
 

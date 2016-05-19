@@ -12,10 +12,9 @@ nav.navbar
     // Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       ul.nav.navbar-nav.navbar-right.main-nav
-        li
-          a(href='/') Intro
-        li
-          a(href='#services') Services
+        if user && user.type == 'teacher'
+          li
+            a(href='/rooms/manage-rooms') Manage Rooms
         if user && user.type == 'admin'
           li
             a(href='/schools/manage-permissions') Manage School Permissions

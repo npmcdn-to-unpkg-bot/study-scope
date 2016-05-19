@@ -2,173 +2,21 @@ import express from 'express';
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import User from '../models/user';
-import School from '../models/school';
-import SchoolPermission from '../models/schoolPermission';
+import handler from './handlers/users-handler';
 
 const router = express.Router();
 
-router.get('/register-teacher', (req, res) => {
-  School.findAll().then(schools => {
-    res.render('register-teacher', {
-      schools: schools
-    });
-  });
-});
+router.get('/register-teacher', handler.registerTeacherGET);
 
+router.post('/register-teacher', handler.registerTeacherPOST);
 
-router.post('/register-teacher', (req, res) => {
-  let schoolName = req.body.schoolName;
-  let name = req.body.name;
-  let username = req.body.username;
-  let email = req.body.email;
-  let password = req.body.password;
-  let reenteredPassword = req.body.reenteredPassword;
+router.get('/register-student', handler.registerStudentGET);
 
-  req.checkBody('schoolName', 'School Name field is required').notEmpty();
-  req.checkBody('username', 'User name is required').notEmpty();
-  req.checkBody('email', 'Email name is required').notEmpty();
-  req.checkBody('email', 'Email not valid').isEmail();
-  req.checkBody('password', 'Password field is required').notEmpty();
-  req.checkBody('reenteredPassword', 'You need entered password twice').notEmpty();
-  req.checkBody('reenteredPassword', 'Password do not match').equals(password);
+router.post('/register-student', handler.registerStudentPOST);
 
-  let errors = req.validationErrors();
+router.get('/side-pick', handler.sidePickGET);
 
-  console.log(errors);
-
-  if (errors) {
-    School.findAll().then(schools => {
-      res.render('register-teacher', {
-        schools: schools,
-        errors: errors,
-        schoolName: schoolName,
-        name: name,
-        username: username,
-        email: email,
-        password: password,
-        reenteredPassword: reenteredPassword
-      });
-    });
-  } else {
-    School
-      .findOne({
-        where: {name: schoolName}
-      })
-      .then((school) => {
-        console.log(school);
-        User
-          .create({
-            name: name,
-            username: username,
-            password: password,
-            email: email,
-            schoolId: school.id,
-            type: 'user'
-          })
-          .then((user) => {
-            console.log(user);
-            res.redirect('/');
-          });
-      });
-  }
-});
-
-router.get('/register-student', (req, res) => {
-  console.log('here');
-  School.findAll().then(schools => {
-    res.render('register-student', {
-      schools: schools
-    });
-  });
-});
-
-router.post('/register-student', (req, res) => {
-  let schoolName = req.body.schoolName;
-  let name = req.body.name;
-  let username = req.body.username;
-  let email = req.body.email;
-  let password = req.body.password;
-  let reenteredPassword = req.body.reenteredPassword;
-  let studentKey = req.body.studentKey;
-
-  req.checkBody('schoolName', 'School Name field is required').notEmpty();
-  req.checkBody('username', 'User name is required').notEmpty();
-  req.checkBody('name', 'Name is required').notEmpty();
-  req.checkBody('email', 'Email name is required').notEmpty();
-  req.checkBody('email', 'Email not valid').isEmail();
-  req.checkBody('password', 'Password field is required').notEmpty();
-  req.checkBody('reenteredPassword', 'You need entered password twice').notEmpty();
-  req.checkBody('reenteredPassword', 'Password do not match').equals(password);
-
-  var errors = req.validationErrors();
-
-  console.log('errors', errors);
-
-  if(errors) {
-    School.findAll().then(schools => {
-      res.render('register-student', {
-        schools: schools,
-        errors: errors,
-        schoolName: schoolName,
-        name: name,
-        username: username,
-        email: email,
-        password: password,
-        reenteredPassword: reenteredPassword,
-        studentKey: studentKey
-      });
-    });
-  } else {
-    School
-      .findOne({
-        where: {name: schoolName}
-      })
-      .then((school) => {
-        SchoolPermission.findOne({
-          where: {schoolId: school.id, studentKey: studentKey}
-        }).then(schoolPermission => {
-          console.log(schoolPermission);
-
-          if (!schoolPermission) {
-            console.log('School permissions dined!');
-            res.redirect('/');
-            // res.render('register-student', {
-            //   schoolName: schoolName,
-            //   name: name,
-            //   username: username,
-            //   email: email,
-            //   password: password,
-            //   reenteredPassword: reenteredPassword,
-            //   studentKey: studentKey
-            // });
-          } else {
-            User
-              .create({
-                name: name,
-                username: username,
-                password: password,
-                email: email,
-                schoolId: school.id,
-                type: 'user',
-                studentKey: studentKey
-              })
-              .then((user) => {
-                console.log(user);
-                res.redirect('/');
-              });
-          }
-        });
-      });
-  }
-});
-
-router.get('/side-pick', (req, res) => {
-  res.render('side-pick');
-});
-
-router.get('/login', (req, res) => {
-  res.render('login');
-});
+router.get('/login', handler.loginGET);
 
 
 passport.serializeUser((user, done) => {
@@ -204,21 +52,12 @@ passport.use(new LocalStrategy(
   }
 ));
 
-router.post(
-  '/login',
-  passport.authenticate('local', {
+router.post( '/login', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/users/login',
     failureFlash: true
-  }), (req, res) => {
-    console.log('Authentication Successful');
-    res.redirect('/', {message: req.flash('success', 'You are logged in')});
-  });
+  }), handler.loginPOST);
 
-router.get('/logout', (req, res) => {
-  req.logout();
-  req.flash('success', 'You have logged out');
-  res.redirect('/');
-});
+router.get('/logout', handler.logoutGET);
 
 module.exports = router;

@@ -1,19 +1,7 @@
 import Sequelize from 'sequelize';
+import sequelizeConnection from './../utils/sequelize-connection';
 
-import dotenv from 'dotenv';
-dotenv.load();
-
-const dbUrl = process.env.DATABASE_URL;
-
-const sequelize = new Sequelize(dbUrl, {
-  dialect: 'postgres',
-  protocol: 'postgres',
-  dialectOptions: {
-    ssl: true
-  }
-});
-
-const User = sequelize.define('user', {
+const User = sequelizeConnection.define('user', {
   username: {
     type: Sequelize.STRING,
     field: 'username'
