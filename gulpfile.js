@@ -21,6 +21,10 @@ gulp.task('default', function(cb) {
   run('server', 'build', 'watch', cb);
 });
 
+gulp.task('debug', function (cb) {
+  run('server', 'restart',  cb);
+});
+
 gulp.task('build', function(cb) {
   run('clean', 'babel', 'copy-client', 'compile-react', 'restart', cb);
 });
@@ -41,16 +45,38 @@ gulp.task('clean', function(cb) {
   rimraf(paths.destination, cb);
 });
 
-gulp.task('compile-react', ['compile-react-rooms']);
+gulp.task('compile-react', ['compile-react-rooms', 'compile-react-participant-adder' ,'compile-react-rooms-list']);
 
 gulp.task('compile-react-rooms', function() {
   return browserify({
-    entries:'./src/public/js/react/rooms.jsx',
+    entries:'./src/public/js/react/rooms-manager.jsx',
     debug: true
   })
     .transform(reactify)
     .bundle()
-    .pipe(source('rooms.js'))
+    .pipe(source('rooms-manager.js'))
+    .pipe(gulp.dest('./dist/public/js/react/'));
+});
+
+gulp.task('compile-react-participant-adder', function() {
+  return browserify({
+    entries:'./src/public/js/react/participant-adder.jsx',
+    debug: true
+  })
+    .transform(reactify)
+    .bundle()
+    .pipe(source('participant-adder.js'))
+    .pipe(gulp.dest('./dist/public/js/react/'));
+});
+
+gulp.task('compile-react-rooms-list', function() {
+  return browserify({
+    entries:'./src/public/js/react/rooms-list.jsx',
+    debug: true
+  })
+    .transform(reactify)
+    .bundle()
+    .pipe(source('rooms-list.js'))
     .pipe(gulp.dest('./dist/public/js/react/'));
 });
 

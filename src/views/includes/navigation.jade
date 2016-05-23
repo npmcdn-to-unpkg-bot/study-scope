@@ -15,6 +15,9 @@ nav.navbar
         if user && user.type == 'teacher'
           li
             a(href='/rooms/manage-rooms') Manage Rooms
+        if user && user.type == 'student'
+          li
+            a(href='/rooms/list/my') My Rooms
         if user && user.type == 'admin'
           li
             a(href='/schools/manage-permissions') Manage School Permissions

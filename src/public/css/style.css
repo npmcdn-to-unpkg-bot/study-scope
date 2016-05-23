@@ -37,3 +37,19 @@
   background: #337ab7;;
   /*display: inline-block;*/
 }
+
+.add-participant-icon {
+  color: #337ab7;
+  display: inline-block;
+  font-size: 25px;
+  margin-left: 20px;
+}
+
+.add-participant-icon:hover {
+  cursor: pointer;
+}
+
+.react-selectize.default.root-node.simple-select {
+  display: inline-block;
+  width: 80%;
+}

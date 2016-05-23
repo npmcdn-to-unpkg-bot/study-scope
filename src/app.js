@@ -16,6 +16,8 @@ import routes from './routes/index';
 import users from './routes/users';
 import schools from './routes/schools';
 import rooms from './routes/rooms'
+import participants from './routes/participants'
+import files from './routes/files'
 
 const app = express();
 const upload = multer();
@@ -86,6 +88,8 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/schools', schools);
 app.use('/rooms', rooms);
+app.use('/participants', participants);
+app.use('/files', files);
 
  
 app.listen(3000, () => {

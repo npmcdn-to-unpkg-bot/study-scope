@@ -7,11 +7,10 @@ const RoomsList = React.createClass({
     const rooms = this.props.rooms;
     return (
       <div>
-        <RoomListAddItem />
         {
           rooms.map(room => {
             return (
-              <Room room={room} key={room.id}/>
+              <Room room={room} key={room.id} onDeleteRoom={this.props.onDeleteRoom}/>
             )
           })
         }

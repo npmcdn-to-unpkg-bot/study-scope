@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  .container.clearfix-header
+    h1 Manage Room: #{room.name}
+    .col-md-8
+      .panel.panel-primary
+        .panel-heading Shared files
+        .panel-body
+          form(method="post", action="/files/upload" enctype="multipart/form-data")
+            .form-group
+              label Title
+              input.form-control(type="text", name="title", placeholder="Enter file title")
+            .form-group
+              label File
+              input.form-control(type="file", name="upl")
+            .form-group
+              input.form-control(type="submit", value="Upload")
+    .col-md-4
+      .panel.panel-primary
+        .panel-heading Participants
+        .panel-body
+          #participantAdder
+        .list-group
+          if participants
+            each participant, i in participants
+              .list-group-item #{participant.name}
+  script(src='../js/react/participant-adder.js')
