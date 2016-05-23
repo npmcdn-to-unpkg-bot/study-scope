@@ -7,7 +7,8 @@ block content
       .panel.panel-primary
         .panel-heading Shared files
         .panel-body
-          form(method="post", action="/files/upload" enctype="multipart/form-data")
+          form(onsubmit="onFileUpload()" method="post", action="/files/upload" enctype="multipart/form-data")
+            input(type="hidden" name="roomId" value="")#roomId
             .form-group
               label Title
               input.form-control(type="text", name="title", placeholder="Enter file title")
@@ -16,6 +17,21 @@ block content
               input.form-control(type="file", name="upl")
             .form-group
               input.form-control(type="submit", value="Upload")
+          .table-responsive
+            table.table
+              thead
+                tr
+                  th Title
+                  th File Name
+                  th Downloaded
+              tbody
+                if files
+                  each file, i in files
+                    tr
+                      td
+                        a(href="/files/#{file.filename}") #{file.title}
+                      td #{file.originalName}
+                      td #{file.createdAt}
     .col-md-4
       .panel.panel-primary
         .panel-heading Participants
@@ -26,3 +42,4 @@ block content
             each participant, i in participants
               .list-group-item #{participant.name}
   script(src='../js/react/participant-adder.js')
+  script(src='../js/room.js')

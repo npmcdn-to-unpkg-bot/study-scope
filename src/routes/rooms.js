@@ -2,6 +2,7 @@ import express from 'express';
 import Room from './../models/room';
 import UserRoom from './../models/user-room';
 import User from './../models/user';
+import File from './../models/file';
 const router = express.Router();
 
 router.get('/manage-rooms', (req, res) => {
@@ -37,7 +38,10 @@ router.get('/:id', (req, res) => {
                     return participantsIds.indexOf(user.id) >= 0;
                   });
 
-                  res.render('room', {room: room, participants: participants});
+                  File.findAll({where: {roomId: room.id}})
+                    .then(files => {
+                      res.render('room', {room: room, participants: participants, files: files});
+                    });
                 });
             });
         });
